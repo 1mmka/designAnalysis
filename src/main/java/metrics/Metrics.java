@@ -8,7 +8,7 @@ public class Metrics {
         comparisons++;
     }
 
-    public void incSwaps () {
+    public void incSwaps() {
         swaps++;
     }
 

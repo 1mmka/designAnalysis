@@ -1,22 +1,33 @@
 package algorithms;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
+import metrics.Metrics;
+import metrics.DepthTracker;
 
 public class ClosestPair {
+
+    private final Metrics metrics;
+    private final DepthTracker depth;
+
+    public ClosestPair(Metrics metrics, DepthTracker depth) {
+        this.metrics = metrics;
+        this.depth = depth;
+    }
 
     public static class Point {
         public double x, y;
         public Point(double x, double y) { this.x = x; this.y = y; }
     }
 
-    public static double distance(Point a, Point b) {
+    private double distance(Point a, Point b) {
         double dx = a.x - b.x;
         double dy = a.y - b.y;
-        return Math.sqrt(dx*dx + dy*dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public static double closestPair(Point[] points) {
+    public double solve(Point[] points) {
+        if (points.length < 2) return Double.POSITIVE_INFINITY;
+
         Point[] px = points.clone();
         Point[] py = points.clone();
         Arrays.sort(px, Comparator.comparingDouble(p -> p.x));
@@ -24,37 +35,62 @@ public class ClosestPair {
         return closestPairRecursive(px, py);
     }
 
-    private static double closestPairRecursive(Point[] px, Point[] py) {
-        int n = px.length;
-        if (n <= 3) {
-            double minDist = Double.POSITIVE_INFINITY;
-            for (int i = 0; i < n; i++)
-                for (int j = i+1; j < n; j++)
-                    minDist = Math.min(minDist, distance(px[i], px[j]));
-            return minDist;
-        }
+    private double closestPairRecursive(Point[] pointsByX, Point[] pointsByY) {
+        depth.enter();
+        try {
+            int n = pointsByX.length;
 
-        int mid = n/2;
-        Point midPoint = px[mid];
-
-        Point[] Qx = Arrays.copyOfRange(px, 0, mid);
-        Point[] Rx = Arrays.copyOfRange(px, mid, n);
-
-        Point[] Qy = Arrays.stream(py).filter(p -> p.x <= midPoint.x).toArray(Point[]::new);
-        Point[] Ry = Arrays.stream(py).filter(p -> p.x > midPoint.x).toArray(Point[]::new);
-
-        double d1 = closestPairRecursive(Qx, Qy);
-        double d2 = closestPairRecursive(Rx, Ry);
-        double d = Math.min(d1, d2);
-
-        Point[] strip = Arrays.stream(py).filter(p -> Math.abs(p.x - midPoint.x) < d).toArray(Point[]::new);
-        double minStrip = d;
-        for (int i = 0; i < strip.length; i++) {
-            for (int j = i+1; j < strip.length && (strip[j].y - strip[i].y) < minStrip; j++) {
-                minStrip = Math.min(minStrip, distance(strip[i], strip[j]));
+            if (n <= 3) {
+                double minDist = Double.POSITIVE_INFINITY;
+                for (int i = 0; i < n; i++) {
+                    for (int j = i + 1; j < n; j++) {
+                        metrics.incComparisons();
+                        minDist = Math.min(minDist, distance(pointsByX[i], pointsByX[j]));
+                    }
+                }
+                return minDist;
             }
-        }
 
-        return minStrip;
+            int mid = n / 2;
+            Point midPoint = pointsByX[mid];
+
+            Point[] leftX = Arrays.copyOfRange(pointsByX, 0, mid);
+            Point[] rightX = Arrays.copyOfRange(pointsByX, mid, n);
+
+            List<Point> leftYList = new ArrayList<>();
+            List<Point> rightYList = new ArrayList<>();
+            for (Point p : pointsByY) {
+                metrics.incComparisons();
+                if (p.x <= midPoint.x) {
+                    leftYList.add(p);
+                } else {
+                    rightYList.add(p);
+                }
+            }
+
+            double dLeft = closestPairRecursive(leftX, leftYList.toArray(new Point[0]));
+            double dRight = closestPairRecursive(rightX, rightYList.toArray(new Point[0]));
+            double d = Math.min(dLeft, dRight);
+
+            List<Point> strip = new ArrayList<>();
+            for (Point p : pointsByY) {
+                metrics.incComparisons();
+                if (Math.abs(p.x - midPoint.x) < d) {
+                    strip.add(p);
+                }
+            }
+
+            double minStrip = d;
+            for (int i = 0; i < strip.size(); i++) {
+                for (int j = i + 1; j < strip.size() && (strip.get(j).y - strip.get(i).y) < minStrip; j++) {
+                    metrics.incComparisons();
+                    minStrip = Math.min(minStrip, distance(strip.get(i), strip.get(j)));
+                }
+            }
+
+            return minStrip;
+        } finally {
+            depth.exit();
+        }
     }
 }

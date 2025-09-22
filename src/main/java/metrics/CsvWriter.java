@@ -4,12 +4,34 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CsvWriter {
-    public static void write(String filename, String header, String row) throws IOException {
-        try (FileWriter writer = new FileWriter(filename, true)) {
-            if (writer.getEncoding() != null && writer.toString().isEmpty()) {
-                writer.write(header + "\n");
+    private static final String FILE = "results.csv";
+    private static boolean headerWritten = false;
+
+    public static void write(String algo, int n, long timeNs, Metrics m, DepthTracker d) {
+        try (FileWriter fw = new FileWriter(FILE, true)) {
+            if (!headerWritten) {
+                fw.write("Algorithm,ArraySize,Time(ns),Comparisons,Swaps,MaxDepth,Extra\n");
+                headerWritten = true;
             }
-            writer.write(row + "\n");
+            fw.write(algo + "," + n + "," + timeNs + "," +
+                    m.getComparisons() + "," + m.getSwaps() + "," +
+                    d.getMaxDepth() + ",\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void write(String algo, int n, long timeNs, Metrics m, DepthTracker d, double minDist) {
+        try (FileWriter fw = new FileWriter(FILE, true)) {
+            if (!headerWritten) {
+                fw.write("Algorithm,ArraySize,Time(ns),Comparisons,Swaps,MaxDepth,Extra\n");
+                headerWritten = true;
+            }
+            fw.write(algo + "," + n + "," + timeNs + "," +
+                    m.getComparisons() + "," + m.getSwaps() + "," +
+                    d.getMaxDepth() + "," + minDist + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

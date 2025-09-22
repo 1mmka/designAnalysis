@@ -2,6 +2,8 @@ package algorithms;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import metrics.Metrics;
+import metrics.DepthTracker;
 
 public class ClosestPairTest {
 
@@ -12,8 +14,12 @@ public class ClosestPairTest {
                 new ClosestPair.Point(1,1),
                 new ClosestPair.Point(2,2)
         };
-        double result = ClosestPair.closestPair(points);
-        assertEquals(Math.sqrt(2), result, 1e-6);
+        Metrics m = new Metrics();
+        DepthTracker d = new DepthTracker();
+        ClosestPair cp = new ClosestPair(m, d);
+        double dist = cp.solve(points);
+
+        assertEquals(Math.sqrt(2), dist, 1e-6);
     }
 
     @Test
@@ -24,7 +30,11 @@ public class ClosestPairTest {
                 new ClosestPair.Point(1,1),
                 new ClosestPair.Point(5,2)
         };
-        double result = ClosestPair.closestPair(points);
-        assertEquals(Math.sqrt(2), result, 1e-6);
+        Metrics m = new Metrics();
+        DepthTracker d = new DepthTracker();
+        ClosestPair cp = new ClosestPair(m, d);
+        double dist = cp.solve(points);
+
+        assertEquals(Math.sqrt(2), dist, 1e-6);
     }
 }

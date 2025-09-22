@@ -3,6 +3,8 @@ package algorithms;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import metrics.Metrics;
+import metrics.DepthTracker;
 
 public class QuickSortTest {
 
@@ -12,7 +14,11 @@ public class QuickSortTest {
         int[] expected = Arrays.copyOf(arr, arr.length);
         Arrays.sort(expected);
 
-        QuickSort.sort(arr);
+        Metrics m = new Metrics();
+        DepthTracker d = new DepthTracker();
+        QuickSort qs = new QuickSort(m, d);
+        qs.sort(arr);
+
 
         assertArrayEquals(expected, arr);
     }
@@ -23,7 +29,10 @@ public class QuickSortTest {
         int[] expected = Arrays.copyOf(arr, arr.length);
         Arrays.sort(expected);
 
-        QuickSort.sort(arr);
+        Metrics m = new Metrics();
+        DepthTracker d = new DepthTracker();
+        QuickSort qs = new QuickSort(m, d);
+        qs.sort(arr);
 
         assertArrayEquals(expected, arr);
     }
@@ -34,7 +43,10 @@ public class QuickSortTest {
         int[] expected = Arrays.copyOf(arr, arr.length);
         Arrays.sort(expected);
 
-        QuickSort.sort(arr);
+        Metrics m = new Metrics();
+        DepthTracker d = new DepthTracker();
+        QuickSort qs = new QuickSort(m, d);
+        qs.sort(arr);
 
         assertArrayEquals(expected, arr);
     }
