@@ -10,12 +10,12 @@ public class CsvWriter {
     public static void write(String algo, int n, long timeNs, Metrics m, DepthTracker d) {
         try (FileWriter fw = new FileWriter(FILE, true)) {
             if (!headerWritten) {
-                fw.write("Algorithm,ArraySize,Time(ns),Comparisons,Swaps,MaxDepth,Extra\n");
+                fw.write("Algorithm,ArraySize,Time(ns),Comparisons,Swaps,MaxDepth\n");
                 headerWritten = true;
             }
             fw.write(algo + "," + n + "," + timeNs + "," +
                     m.getComparisons() + "," + m.getSwaps() + "," +
-                    d.getMaxDepth() + ",\n");
+                    d.getMaxDepth() + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class CsvWriter {
             }
             fw.write(algo + "," + n + "," + timeNs + "," +
                     m.getComparisons() + "," + m.getSwaps() + "," +
-                    d.getMaxDepth() + "," + minDist + "\n");
+                    d.getMaxDepth() + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
