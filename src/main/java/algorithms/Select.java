@@ -45,12 +45,10 @@ public class Select {
     }
 
 
-
-
-    private static int partition5(int[] arr, int left, int right, Metrics m) {
-        insertionSort(arr, left, right, m);
-        return (left + right) / 2;
-    }
+//    private static int partition5(int[] arr, int left, int right, Metrics m) {
+//        insertionSort(arr, left, right, m);
+//        return (left + right) / 2;
+//    }
 
     private static void insertionSort(int[] arr, int left, int right, Metrics m) {
         for (int i = left + 1; i <= right; i++) {

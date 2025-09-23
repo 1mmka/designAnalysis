@@ -21,7 +21,7 @@ public class QuickSort {
 
     private void sort(int[] arr, int left, int right) {
         while (left < right) {
-            depth.enter(); // вход в рекурсию
+            depth.enter();
             int pivotIndex = partition(arr, left, right);
             if (pivotIndex - left < right - pivotIndex) {
                 sort(arr, left, pivotIndex - 1);
@@ -30,7 +30,7 @@ public class QuickSort {
                 sort(arr, pivotIndex + 1, right);
                 right = pivotIndex - 1;
             }
-            depth.exit(); // выход из рекурсии
+            depth.exit();
         }
     }
 
