@@ -1,0 +1,10 @@
+"Benchmark","Mode","Threads","Samples","Score","Score Error (99,9%)","Unit","Param: n"
+"benchmarks.SelectVsSortBench.testDeterministicSelect","avgt",1,25,"0,008440","0,000087","ms/op",1000
+"benchmarks.SelectVsSortBench.testDeterministicSelect","avgt",1,25,"0,080831","0,001560","ms/op",10000
+"benchmarks.SelectVsSortBench.testDeterministicSelect","avgt",1,25,"0,798459","0,011778","ms/op",100000
+"benchmarks.SelectVsSortBench.testMergeSort","avgt",1,25,"0,041243","0,000453","ms/op",1000
+"benchmarks.SelectVsSortBench.testMergeSort","avgt",1,25,"0,590852","0,006431","ms/op",10000
+"benchmarks.SelectVsSortBench.testMergeSort","avgt",1,25,"7,846727","0,105123","ms/op",100000
+"benchmarks.SelectVsSortBench.testQuickSort","avgt",1,25,"0,047368","0,000339","ms/op",1000
+"benchmarks.SelectVsSortBench.testQuickSort","avgt",1,25,"0,595662","0,009516","ms/op",10000
+"benchmarks.SelectVsSortBench.testQuickSort","avgt",1,25,"9,655883","2,883643","ms/op",100000
